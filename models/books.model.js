@@ -118,6 +118,7 @@ const getBooksByID = async (id) => {
                     Status: '$Status',
                     NoOfReads: '$NoOfReads',
                     CategoryName: '$categories.CategoryName',
+                    UserID: '$users._id',
                     UserName: '$users.UserName',
                 },
                 count: { $sum: 1 },
@@ -126,8 +127,62 @@ const getBooksByID = async (id) => {
     ]);
 };
 
+const getBooksByUser = async (id) => {
+    return await books.aggregate([
+        {
+            $match: {
+                UserID: mongoose.Types.ObjectId(id),
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'UserID',
+                foreignField: '_id',
+                as: 'users',
+            }
+        },
+        {
+            $unwind: {
+                path: '$users',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $lookup: {
+                from: 'booksdetails',
+                localField: '_id',
+                foreignField: 'BookID',
+                as: 'booksdetails',
+            }
+        },
+        {
+            $unwind: {
+                path: '$booksdetails',
+                preserveNullAndEmptyArrays: false
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    BookID: '$booksdetails.BookID',
+                    BookName: '$BookName',
+                    Description: '$Description',
+                    BookPic: '$BookPic',
+                    Status: '$Status',
+                    NoOfReads: '$NoOfReads',
+                    CategoryID: '$CategoryID',
+                    UserName: '$users.UserName'
+                },
+                count: { $sum: 1 }
+            }
+        }          
+    ]);
+};
+
 module.exports = {
     getBooks,
     getBooksByCategory,
     getBooksByID,
+    getBooksByUser,
 }; 

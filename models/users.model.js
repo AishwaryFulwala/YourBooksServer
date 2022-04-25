@@ -1,3 +1,4 @@
+const  mongoose = require('mongoose');
 const users = require('../schemas/users.mongo');
 
 const registerUser = async (user) => {
@@ -7,13 +8,13 @@ const registerUser = async (user) => {
 
 const getUser = async (id) => {
     return await users.findOne({
-        Email: id,
+        _id: mongoose.Types.ObjectId(id),
     })
 };
 
 const updateUser = async (id, user) => {
     return await users.updateOne({
-        Email: id
+        _id: mongoose.Types.ObjectId(id)
     }, {
         $set: {
             ...user,

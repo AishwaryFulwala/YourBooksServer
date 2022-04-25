@@ -70,7 +70,7 @@ const getUser = async (req, res) => {
             error: 'You must have to Login.',
         });
     }
-
+    
     const get = await usersModel.getUser(req.params.id);
     return res.status(200).json(get);
 };
@@ -112,6 +112,7 @@ const updateUser = async (req, res) => {
             });
         }
     }
+    
     const get = await usersModel.updateUser(id, user)
     return res.status(200).json(get);
 };

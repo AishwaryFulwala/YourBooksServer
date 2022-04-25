@@ -14,13 +14,13 @@ const usersSchema = new mongoose.Schema({
         default: 'https://firebasestorage.googleapis.com/v0/b/yourbooks-f1f3d.appspot.com/o/Images%2FCoverPic%2FNoImage.jpeg?alt=media&token=582e4e99-9bed-4650-afc1-6e7e23a3607b'
     },
     About: String,
-    Following: {
-        type: Number,
-        default: 0
+    Followings: {
+        type: Array,
+        default: [{ type: mongoose.Schema.ObjectId }]
     },
     Followers: {
-        type: Number,
-        default: 0
+        type: Array,
+        default: [{ type: mongoose.Schema.ObjectId }]
     },
 });
 
