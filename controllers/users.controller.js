@@ -75,6 +75,20 @@ const getUser = async (req, res) => {
     return res.status(200).json(get);
 };
 
+const getFollow = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const id = req.params.id;
+    const fid = req.params.fid;
+
+    const get = await usersModel.getFollow(id, {Followers: fid});
+    return res.status(200).json(get);
+};
+
 const updateUser = async (req, res) => {
     if(!req.user) {
         return res.status(401).json({
@@ -112,8 +126,23 @@ const updateUser = async (req, res) => {
             });
         }
     }
+
+    if(user?.Follow) {
+        const check = await usersModel.getFollow(id, {Followers: user.Follow});
+
+        if(!check) {
+            const getFollowers = await usersModel.updateFollow(id, {Followers: user.Follow});
+            const getFollowing = await usersModel.updateFollow(user.Follow, {Followings: id});
+            return res.status(200).json({ res: 'Update'});
+        }
+        else {
+            const getFollowers = await usersModel.delFollow(id, {Followers: user.Follow});
+            const getFollowing = await usersModel.delFollow(user.Follow, {Followings: id});
+            return res.status(200).json({ res: 'Delete'});
+        }
+    }
     
-    const get = await usersModel.updateUser(id, user)
+    const get = await usersModel.updateUser(id, user);
     return res.status(200).json(get);
 };
 
@@ -121,5 +150,6 @@ module.exports = {
     signup,
     signin,
     getUser,
+    getFollow,
     updateUser,
 };

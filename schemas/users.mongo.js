@@ -16,11 +16,9 @@ const usersSchema = new mongoose.Schema({
     About: String,
     Followings: {
         type: Array,
-        default: [{ type: mongoose.Schema.ObjectId }]
     },
     Followers: {
         type: Array,
-        default: [{ type: mongoose.Schema.ObjectId }]
     },
 });
 
