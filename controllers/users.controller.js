@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const signup = async (req, res) => {
     const user = req.body;
 
-    const check = await usersModel.getUser(user.Email);
+    const check = await usersModel.checkUser(user.Email);
 
     if(check) {
         return res.status(409).json({
@@ -30,7 +30,7 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
     const user = req.body;
     
-    const check = await usersModel.getUser(user.Email);
+    const check = await usersModel.checkUser(user.Email);
  
     if(!check) {
         return res.status(403).json({
@@ -83,9 +83,8 @@ const getFollow = async (req, res) => {
     }
 
     const id = req.params.id;
-    const fid = req.params.fid;
 
-    const get = await usersModel.getFollow(id, {Followers: fid});
+    const get = await usersModel.getFollow(id);
     return res.status(200).json(get);
 };
 
@@ -128,16 +127,16 @@ const updateUser = async (req, res) => {
     }
 
     if(user?.Follow) {
-        const check = await usersModel.getFollow(id, {Followers: user.Follow});
+        const check = await usersModel.checkFollow(id, {Followings: user.Follow});
 
         if(!check) {
-            const getFollowers = await usersModel.updateFollow(id, {Followers: user.Follow});
-            const getFollowing = await usersModel.updateFollow(user.Follow, {Followings: id});
+            const getFollowing = await usersModel.updateFollow(id, {Followings: user.Follow});
+            const getFollowers = await usersModel.updateFollow(user.Follow, {Followers: id});
             return res.status(200).json({ res: 'Update'});
         }
         else {
-            const getFollowers = await usersModel.delFollow(id, {Followers: user.Follow});
-            const getFollowing = await usersModel.delFollow(user.Follow, {Followings: id});
+            const getFollowing = await usersModel.delFollow(id, {Followings: user.Follow});
+            const getFollowers = await usersModel.delFollow(user.Follow, {Followers: id});
             return res.status(200).json({ res: 'Delete'});
         }
     }

@@ -6,9 +6,15 @@ const registerUser = async (user) => {
     return await newUser.save();
 };
 
+const checkUser = async (id) => {
+    return await users.findOne({
+        Email: id
+    })
+};
+
 const getUser = async (id) => {
     return await users.findOne({
-        _id: mongoose.Types.ObjectId(id)      
+        _id: mongoose.Types.ObjectId(id)
     })
 };
 
@@ -22,10 +28,10 @@ const updateUser = async (id, user) => {
     });
 };
 
-const getFollow = async (id, user) => {
+const checkFollow = async (id, user) => {
     return await users.findOne({
         _id: mongoose.Types.ObjectId(id),
-        [user?.Followers ?  'Followers' : 'Followings']: [ mongoose.Types.ObjectId(user?.Followers || user?.Followings) ]
+        [user?.Followers ?  'Followers' : 'Followings']: mongoose.Types.ObjectId(user?.Followers || user?.Followings)
     })
 };
 
@@ -49,11 +55,43 @@ const delFollow = async (id, user) => {
     });
 }
 
+const getFollow = async (id) => {
+    const { Followings, Followers } = await users.findOne({
+        _id: mongoose.Types.ObjectId(id)
+    },{ 
+        Followings: 1,
+        Followers: 1,
+    });
+
+    const resFollowings = await users.find({
+        _id: { $in: Followings}
+    },{
+        _id: 1, 
+        UserName: 1, 
+        ProfilePic: 1
+    });
+
+    const resFollowers = await users.find({
+        _id: { $in: Followers}
+    },{
+        _id: 1, 
+        UserName: 1, 
+        ProfilePic: 1
+    });
+
+    return {
+        Followers: resFollowers,
+        Followings: resFollowings
+    }
+};
+
 module.exports = {
     registerUser,
+    checkUser,
     getUser,
     updateUser,
-    getFollow,
+    checkFollow,
     updateFollow,
-    delFollow
+    delFollow,
+    getFollow
 }; 
