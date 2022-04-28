@@ -7,6 +7,7 @@ const booksRouter = require('./routers/books.router');
 const booksDetailRouter = require('./routers/booksDetail.router');
 const ratingRouter = require('./routers/rating.router');
 const readingListRouter = require('./routers/readingList.router');
+const searchHistoryRouter = require('./routers/serachHistory.router');
 
 const app = express();
 
@@ -32,5 +33,6 @@ app.use(booksRouter);
 app.use(booksDetailRouter);
 app.use(ratingRouter);
 app.use(readingListRouter);
+app.use(searchHistoryRouter);
 
 module.exports = app

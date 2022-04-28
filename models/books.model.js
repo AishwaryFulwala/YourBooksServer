@@ -54,6 +54,11 @@ const getBooksByCategory = async (id) => {
                 },
                 count: { $sum: 1 }
             }
+        },
+        {
+            $sort: {
+                '_id.BookID': -1
+            }
         }
     ]);
 };
