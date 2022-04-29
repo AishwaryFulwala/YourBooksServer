@@ -1,4 +1,4 @@
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const rating = require('../schemas/rating.mongo');
 
 const getRating = async () => {
@@ -6,6 +6,9 @@ const getRating = async () => {
 };
 
 const getAvgRating = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await rating.aggregate([
         {
             $match: {
@@ -26,6 +29,9 @@ const getAvgRating = async (id) => {
 };
 
 const getRatingByBook = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+        
     return await rating.aggregate([
         {
             $match: {

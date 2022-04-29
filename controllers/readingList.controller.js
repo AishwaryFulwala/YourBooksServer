@@ -8,6 +8,7 @@ const getReadingList = async (req, res) => {
     }
 
     const get = await readingListModel.getReadingList();
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No List Found.'
@@ -26,13 +27,16 @@ const getReadingListByID = async (req, res) => {
 
     const bid = req.params.bid;
     const uid = req.params.uid;
-
     const get = await readingListModel.getReadingListByID(bid, uid);
 
     if(!get) {
         return res.status(404).json({
             error: 'No List Found.'
         });        
+    }
+
+    if(get?.error){
+        return res.status(400).json(get);
     }
 
     return res.status(200).json(get);
@@ -57,7 +61,13 @@ const deleteReadingList = async (req, res) => {
     }
 
     const id = req.params.id;
-    return res.status(200).json(await readingListModel.deleteReadingList(id));
+    const get = await readingListModel.deleteReadingList(id);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+    
+    return res.status(200).json();
 };
 
 module.exports = {

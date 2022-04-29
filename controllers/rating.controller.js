@@ -8,6 +8,7 @@ const getRating = async (req, res) => {
     }
 
     const get = await ratingModel.getRating();
+    
     if(!get.length) {
         return res.status(404).json({
             error: 'No Rating Found.'
@@ -25,12 +26,16 @@ const getAvgRating = async (req, res) => {
     }
 
     const id = req.params.id;
-
     const get = await ratingModel.getAvgRating(id);
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Rating Found.'
         });        
+    }
+
+    if(get?.error){
+        return res.status(400).json(get);
     }
 
     return res.status(200).json(get);
@@ -44,12 +49,16 @@ const getRatingByBook = async (req, res) => {
     }
 
     const id = req.params.id;
-
     const get = await ratingModel.getRatingByBook(id);
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Rating Found.'
         });        
+    }
+
+    if(get?.error){
+        return res.status(400).json(get);
     }
 
     return res.status(200).json(get);

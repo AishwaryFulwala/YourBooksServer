@@ -1,4 +1,4 @@
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const users = require('../schemas/users.mongo');
 
 const registerUser = async (user) => {
@@ -13,12 +13,18 @@ const checkUser = async (id) => {
 };
 
 const getUser = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await users.findOne({
         _id: mongoose.Types.ObjectId(id)
     })
 };
 
 const updateUser = async (id, user) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await users.updateOne({
         _id: mongoose.Types.ObjectId(id)
     }, {
@@ -29,6 +35,9 @@ const updateUser = async (id, user) => {
 };
 
 const checkFollow = async (id, user) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await users.findOne({
         _id: mongoose.Types.ObjectId(id),
         [user?.Followers ?  'Followers' : 'Followings']: mongoose.Types.ObjectId(user?.Followers || user?.Followings)
@@ -36,6 +45,9 @@ const checkFollow = async (id, user) => {
 };
 
 const updateFollow = async (id, user) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await users.updateOne({
         _id: mongoose.Types.ObjectId(id)
     }, {
@@ -46,6 +58,9 @@ const updateFollow = async (id, user) => {
 };
 
 const delFollow = async (id, user) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await users.updateOne({
         _id: mongoose.Types.ObjectId(id)
     }, {
@@ -56,6 +71,9 @@ const delFollow = async (id, user) => {
 }
 
 const getFollow = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     const { Followings, Followers } = await users.findOne({
         _id: mongoose.Types.ObjectId(id)
     },{ 

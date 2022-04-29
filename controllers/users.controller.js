@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const signup = async (req, res) => {
     const user = req.body;
-
     const check = await usersModel.checkUser(user.Email);
 
     if(check) {
@@ -28,8 +27,7 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
-    const user = req.body;
-    
+    const user = req.body;    
     const check = await usersModel.checkUser(user.Email);
  
     if(!check) {
@@ -72,6 +70,11 @@ const getUser = async (req, res) => {
     }
     
     const get = await usersModel.getUser(req.params.id);
+    
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     return res.status(200).json(get);
 };
 
@@ -83,8 +86,12 @@ const getFollow = async (req, res) => {
     }
 
     const id = req.params.id;
-
     const get = await usersModel.getFollow(id);
+    
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     return res.status(200).json(get);
 };
 
@@ -98,8 +105,11 @@ const updateUser = async (req, res) => {
     let user = req.body;
     const id = req.params.id;
     user = {...user.user}
-    
     const check = await usersModel.getUser(id);
+
+    if(check?.error){
+        return res.status(400).json(check);
+    }
 
     if(user?.Password) {
         try {
@@ -129,19 +139,48 @@ const updateUser = async (req, res) => {
     if(user?.Follow) {
         const check = await usersModel.checkFollow(id, {Followings: user.Follow});
 
+        if(check?.error){
+            return res.status(400).json(check);
+        }
+
         if(!check) {
             const getFollowing = await usersModel.updateFollow(id, {Followings: user.Follow});
+
+            if(getFollowing?.error){
+                return res.status(400).json(getFollowing);
+            }
+
             const getFollowers = await usersModel.updateFollow(user.Follow, {Followers: id});
+
+            if(getFollowers?.error){
+                return res.status(400).json(getFollowers);
+            }
+
             return res.status(200).json({ res: 'Update'});
         }
         else {
             const getFollowing = await usersModel.delFollow(id, {Followings: user.Follow});
+
+            if(getFollowing?.error){
+                return res.status(400).json(getFollowing);
+            }
+
             const getFollowers = await usersModel.delFollow(user.Follow, {Followers: id});
+
+            if(getFollowers?.error){
+                return res.status(400).json(getFollowers);
+            }
+
             return res.status(200).json({ res: 'Delete'});
         }
     }
     
     const get = await usersModel.updateUser(id, user);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     return res.status(200).json(get);
 };
 

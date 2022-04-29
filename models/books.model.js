@@ -1,4 +1,4 @@
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const books = require('../schemas/books.mongo');
 
 const getBooks = async () => {
@@ -6,6 +6,9 @@ const getBooks = async () => {
 };
 
 const getBooksByCategory = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
     return await books.aggregate([
         {
             $match: {
@@ -64,6 +67,8 @@ const getBooksByCategory = async (id) => {
 };
 
 const getBooksByID = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
     
     return await books.aggregate([
         {
@@ -133,6 +138,9 @@ const getBooksByID = async (id) => {
 };
 
 const getBooksByUser = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+        
     return await books.aggregate([
         {
             $match: {
