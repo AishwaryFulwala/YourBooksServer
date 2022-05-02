@@ -198,9 +198,34 @@ const getBooksByUser = async (id) => {
     ]);
 };
 
+const getBookNameByUser = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+        
+    return await books.find({
+        UserID: id
+    });
+};
+
+const addBook = async (book) => {
+    if(!mongoose.Types.ObjectId.isValid(book.CategoryID))
+        return { error: 'Invalid Opration.' };
+    
+    if(!mongoose.Types.ObjectId.isValid(book.UserID))
+        return { error: 'Invalid Opration.' };
+
+    if(!book.BookPic)
+        delete book.BookPic; 
+
+    const newBbook = new books(book);
+    return await newBbook.save();
+};
+
 module.exports = {
     getBooks,
     getBooksByCategory,
     getBooksByID,
     getBooksByUser,
+    getBookNameByUser,
+    addBook,
 }; 

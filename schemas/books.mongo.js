@@ -8,7 +8,7 @@ const booksSchema = new mongoose.Schema({
     },
     BookPic: {
         type: String,
-        default: 'https://firebasestorage.googleapis.com/v0/b/yourbooks-f1f3d.appspot.com/o/Images%2FBook%2FnoImage.jpeg?alt=media&token=3b5e0bc4-48a8-4ae0-9f47-fe2db6792e73'
+        default: 'https://firebasestorage.googleapis.com/v0/b/yourbooks-f1f3d.appspot.com/o/Images%2FBook%2FNoImage.png?alt=media&token=ab565fc0-d131-42d9-8205-1fb7c44925ca'
     },
     Status: {
         type: Boolean,
