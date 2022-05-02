@@ -9,7 +9,7 @@ const signup = async (req, res) => {
 
     if(check) {
         return res.status(409).json({
-            error: 'User is already exists.'
+            error: 'Invalid User ID.'
         });        
     }
 
@@ -32,7 +32,7 @@ const signin = async (req, res) => {
  
     if(!check) {
         return res.status(403).json({
-            error: 'User doesn\'t exists.'
+            error: 'Invalid User ID.'
         });        
     }
     

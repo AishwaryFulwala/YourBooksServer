@@ -42,6 +42,30 @@ const getReadingListByID = async (req, res) => {
     return res.status(200).json(get);
 };
 
+const getReadingListByUserID = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const uid = req.params.uid;
+    const get = await readingListModel.getReadingListByUserID(uid);
+
+    if(!get) {
+        return res.status(404).json({
+            error: 'No List Found.'
+        });        
+    }
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
+    return res.status(200).json(get);
+};
+
+
 const addReadingList = async (req, res) => {
     if(!req.user) {
         return res.status(401).json({
@@ -73,6 +97,7 @@ const deleteReadingList = async (req, res) => {
 module.exports = {
     getReadingList,
     getReadingListByID,
+    getReadingListByUserID,
     addReadingList,
     deleteReadingList
 };

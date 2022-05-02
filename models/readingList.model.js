@@ -18,6 +18,49 @@ const getReadingListByID = async (bid, uid) => {
     });
 };
 
+const getReadingListByUserID = async (uid) => {
+    if(!mongoose.Types.ObjectId.isValid(uid))
+        return { error: 'Invalid Opration.' };
+
+    return await readingList.aggregate([
+        {
+            $match: {
+                UserID: mongoose.Types.ObjectId(uid)
+            }
+        },
+        {
+            $lookup: {
+                from: 'books',
+                localField: 'BookID',
+                foreignField: '_id',
+                as: 'books',
+            }
+        },
+        {
+            $unwind: {
+                path: '$books',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    BookID: '$BookID',
+                    BookName: '$books.BookName',
+                    BookPic: '$books.BookPic',
+                    UserID: '$UserID',
+                    ID: '$_id'
+                }
+            }
+        },
+        {
+            $sort: {
+                '_id.ID': -1,
+            }
+        }
+    ]);
+};
+
 const addReadingList = async (list) => {
     const newList = new readingList(list);
     return await newList.save();
@@ -33,6 +76,7 @@ const deleteReadingList = async (id) => {
 module.exports = {
     getReadingList,
     getReadingListByID,
+    getReadingListByUserID,
     addReadingList,
     deleteReadingList
 }; 
