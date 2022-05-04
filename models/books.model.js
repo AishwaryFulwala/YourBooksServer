@@ -115,7 +115,7 @@ const getBooksByID = async (id) => {
         {
             $unwind: {
                 path: '$booksdetails',
-                preserveNullAndEmptyArrays: false
+                preserveNullAndEmptyArrays: true
             }
         },
         {
