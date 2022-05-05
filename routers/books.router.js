@@ -9,5 +9,6 @@ booksRouter.get('/getBooksByID/:id', booksController.getBooksByID);
 booksRouter.get('/getBooksByUser/:id', booksController.getBooksByUser);
 booksRouter.get('/getBookNameByUser/:id', booksController.getBookNameByUser);
 booksRouter.post('/addBook', booksController.addBook);
+booksRouter.patch('/updateBook/:id', booksController.updateBook);
 
 module.exports = booksRouter

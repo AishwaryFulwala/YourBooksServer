@@ -221,6 +221,19 @@ const addBook = async (book) => {
     return await newBbook.save();
 };
 
+const updateBook = async (id, book) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await books.updateOne({
+        _id: mongoose.Types.ObjectId(id)
+    }, {
+        $set: {
+            ...book,
+        }
+    });
+};
+
 module.exports = {
     getBooks,
     getBooksByCategory,
@@ -228,4 +241,5 @@ module.exports = {
     getBooksByUser,
     getBookNameByUser,
     addBook,
+    updateBook,
 }; 

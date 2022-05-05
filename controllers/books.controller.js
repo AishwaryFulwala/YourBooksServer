@@ -126,6 +126,24 @@ const addBook = async (req, res) => {
     return res.status(200).json(get);
 };
 
+const updateBook = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const id = req.params.id;
+    const {book} = req.body;
+    const get = await booksModel.updateBook(id, book);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
+    return res.status(200).json(get);
+};
+
 module.exports = {
     getBooks,
     getBooksByCategory,
@@ -133,4 +151,5 @@ module.exports = {
     getBooksByUser,
     getBookNameByUser,
     addBook,
+    updateBook,
 };

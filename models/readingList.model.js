@@ -48,6 +48,7 @@ const getReadingListByUserID = async (uid) => {
                     BookID: '$BookID',
                     BookName: '$books.BookName',
                     BookPic: '$books.BookPic',
+                    NoOfReads: '$books.NoOfReads',
                     UserID: '$UserID',
                     ID: '$_id'
                 }
