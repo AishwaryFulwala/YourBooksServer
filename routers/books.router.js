@@ -10,5 +10,6 @@ booksRouter.get('/getBooksByUser/:id', booksController.getBooksByUser);
 booksRouter.get('/getBookNameByUser/:id', booksController.getBookNameByUser);
 booksRouter.post('/addBook', booksController.addBook);
 booksRouter.patch('/updateBook/:id', booksController.updateBook);
+booksRouter.delete('/deleteBook/:id', booksController.deleteBook);
 
 module.exports = booksRouter

@@ -234,6 +234,13 @@ const updateBook = async (id, book) => {
     });
 };
 
+const deleteBook = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await books.deleteOne({ _id: id });
+}
+
 module.exports = {
     getBooks,
     getBooksByCategory,
@@ -242,4 +249,5 @@ module.exports = {
     getBookNameByUser,
     addBook,
     updateBook,
+    deleteBook,
 }; 

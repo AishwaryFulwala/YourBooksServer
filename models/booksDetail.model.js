@@ -46,7 +46,7 @@ const getPartsByID = async (id) => {
 
     return await booksDetail.find({
         BookID: mongoose.Types.ObjectId(id),
-    });
+    }).sort({ PartNo: 1 });
 };
 
 const addBookDetail = async (book) => {
@@ -57,9 +57,39 @@ const addBookDetail = async (book) => {
     return await newBook.save();
 };
 
+const updateBookDetail = async (id, book) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await booksDetail.updateOne({
+        _id: mongoose.Types.ObjectId(id)
+    }, {
+        $set: {
+            ...book,
+        }
+    });
+};
+
+const deleteBookDetail = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await booksDetail.deleteOne({ _id: id });
+}
+
+const deleteAllBookDetail = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await booksDetail.deleteMany({ BookID: id });
+}
+
 module.exports = {
     getBooksDetail,
     getBooksDetailByID,
     getPartsByID,
     addBookDetail,
+    updateBookDetail,
+    deleteBookDetail,
+    deleteAllBookDetail
 }; 
