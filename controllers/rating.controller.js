@@ -75,9 +75,27 @@ const addRating = async (req, res) => {
     return res.status(200).json(await ratingModel.addRating(rating));
 };
 
+const deleteRatingByID = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const id = req.params.id;
+    const get = await ratingModel.deleteRatingByID(id);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
+    return res.status(200).json(get);
+};
+
 module.exports = {
     getRating,
     getAvgRating,
     getRatingByBook,
     addRating,
+    deleteRatingByID,
 };

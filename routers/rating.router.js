@@ -6,6 +6,7 @@ const ratingRouter = express.Router()
 ratingRouter.get('/getRating', ratingController.getRating);
 ratingRouter.get('/getAvgRating/:id', ratingController.getAvgRating);
 ratingRouter.get('/getRatingByBook/:id', ratingController.getRatingByBook);
-ratingRouter.patch('/addRating',ratingController.addRating)
+ratingRouter.patch('/addRating',ratingController.addRating);
+ratingRouter.delete('/deleteRatingByID/:id',ratingController.deleteRatingByID);
 
 module.exports = ratingRouter

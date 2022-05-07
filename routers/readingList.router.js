@@ -8,5 +8,6 @@ readingListRouter.get('/getReadingListByID/:bid/:uid', readingListController.get
 readingListRouter.get('/getReadingListByUserID/:uid', readingListController.getReadingListByUserID);
 readingListRouter.post('/addReadingList', readingListController.addReadingList);
 readingListRouter.delete('/deleteReadingList/:id', readingListController.deleteReadingList);
+readingListRouter.delete('/deleteReadingListByID/:id', readingListController.deleteReadingListByID);
 
 module.exports = readingListRouter

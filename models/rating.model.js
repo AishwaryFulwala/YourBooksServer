@@ -78,9 +78,17 @@ const addRating = async (data) => {
     return await newRating.save();
 };
 
+const deleteRatingByID = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await rating.deleteMany({ BookID: mongoose.Types.ObjectId(id) });
+}
+
 module.exports = {
     getRating,
     getAvgRating,
     getRatingByBook,
     addRating,
+    deleteRatingByID,
 }; 

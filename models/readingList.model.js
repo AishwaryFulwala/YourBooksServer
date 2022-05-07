@@ -74,10 +74,18 @@ const deleteReadingList = async (id) => {
     return await readingList.deleteOne({ _id: mongoose.Types.ObjectId(id) });
 }
 
+const deleteReadingListByID = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await readingList.deleteMany({ BookID: mongoose.Types.ObjectId(id) });
+}
+
 module.exports = {
     getReadingList,
     getReadingListByID,
     getReadingListByUserID,
     addReadingList,
-    deleteReadingList
+    deleteReadingList,
+    deleteReadingListByID
 }; 
