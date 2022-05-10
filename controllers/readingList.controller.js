@@ -12,7 +12,7 @@ const getReadingList = async (req, res) => {
     if(!get.length) {
         return res.status(404).json({
             error: 'No List Found.'
-        });        
+        });
     }
 
     return res.status(200).json(get);
@@ -32,11 +32,34 @@ const getReadingListByID = async (req, res) => {
     if(!get) {
         return res.status(404).json({
             error: 'No List Found.'
-        });        
+        });
     }
 
     if(get?.error){
         return res.status(400).json(get);
+    }
+
+    return res.status(200).json(get);
+};
+
+const getReadingListByBookID = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const id = req.params.id;
+    const get = await readingListModel.getReadingListByBookID(id);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
+    if(!get.length) {
+        return res.status(404).json({
+            error: 'No List Found.'
+        });
     }
 
     return res.status(200).json(get);
@@ -55,7 +78,7 @@ const getReadingListByUserID = async (req, res) => {
     if(!get) {
         return res.status(404).json({
             error: 'No List Found.'
-        });        
+        });
     }
 
     if(get?.error){
@@ -114,6 +137,7 @@ const deleteReadingListByID = async (req, res) => {
 module.exports = {
     getReadingList,
     getReadingListByID,
+    getReadingListByBookID,
     getReadingListByUserID,
     addReadingList,
     deleteReadingList,

@@ -12,7 +12,7 @@ const getBooksDetail = async (req, res) => {
     if(!get.length) {
         return res.status(404).json({
             error: 'No Books Found.'
-        });        
+        });
     }
 
     return res.status(200).json(get);
@@ -28,14 +28,14 @@ const getBooksDetailByID = async (req, res) => {
     const id = req.params.id;
     const get = await booksDetailModel.getBooksDetailByID(id);
 
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Books Found.'
-        });        
-    }
-
-    if(get?.error){
-        return res.status(400).json(get);
+        });
     }
 
     return res.status(200).json(get);
@@ -51,14 +51,14 @@ const getPartsByID = async (req, res) => {
     const id = req.params.id;
     const get = await booksDetailModel.getPartsByID(id);
 
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Books Found.'
-        });        
-    }
-
-    if(get?.error){
-        return res.status(400).json(get);
+        });
     }
 
     return res.status(200).json(get);

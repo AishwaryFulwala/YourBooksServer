@@ -18,6 +18,15 @@ const getReadingListByID = async (bid, uid) => {
     });
 };
 
+const getReadingListByBookID = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await readingList.find({
+        BookID: mongoose.Types.ObjectId(id),
+    });
+};
+
 const getReadingListByUserID = async (uid) => {
     if(!mongoose.Types.ObjectId.isValid(uid))
         return { error: 'Invalid Opration.' };
@@ -84,6 +93,7 @@ const deleteReadingListByID = async (id) => {
 module.exports = {
     getReadingList,
     getReadingListByID,
+    getReadingListByBookID,
     getReadingListByUserID,
     addReadingList,
     deleteReadingList,

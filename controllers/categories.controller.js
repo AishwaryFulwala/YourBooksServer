@@ -24,6 +24,7 @@ const getCategoryByID = async (req, res) => {
             error: 'You must have to Login.',
         });
     }
+    
     const id = req.params.id;
     const get = await categoriesModel.getCategoryByID(id);
 

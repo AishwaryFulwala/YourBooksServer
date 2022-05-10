@@ -12,7 +12,7 @@ const getSearchHistory = async (req, res) => {
     if(!get.length) {
         return res.status(404).json({
             error: 'No Search History Found.'
-        });        
+        });
     }
 
     return res.status(200).json(get);
@@ -31,7 +31,7 @@ const getSearchHistoryByID = async (req, res) => {
     if(!get) {
         return res.status(404).json({
             error: 'No Search History Found.'
-        });        
+        });
     }
 
     if(get?.error){
@@ -83,7 +83,7 @@ const getSearchData = async (req, res) => {
     if(!get?.Book.length && !get?.User.length) {
         return res.status(404).json({
             error: 'No Search Data Found.'
-        });        
+        });
     }
 
     return res.status(200).json(get);

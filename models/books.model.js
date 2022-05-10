@@ -207,6 +207,44 @@ const getBookNameByUser = async (id) => {
     });
 };
 
+const getBooksByBookID = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+    
+    return await books.aggregate([
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(id),
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'UserID',
+                foreignField: '_id',
+                as: 'users',
+            }
+        },
+        {
+            $unwind: {
+                path: '$users',
+                preserveNullAndEmptyArrays: true
+            }
+        },
+        {
+            $group: {
+                _id: {
+                    BookID: '$_id',
+                    BookName: '$BookName',
+                    BookPic: '$BookPic',
+                    UserID: '$users._id',
+                    ProfilePic: '$users.ProfilePic',
+                },
+            }
+        }
+    ]);
+};
+
 const addBook = async (book) => {
     if(!mongoose.Types.ObjectId.isValid(book.CategoryID))
         return { error: 'Invalid Opration.' };
@@ -247,6 +285,7 @@ module.exports = {
     getBooksByID,
     getBooksByUser,
     getBookNameByUser,
+    getBooksByBookID,
     addBook,
     updateBook,
     deleteBook,

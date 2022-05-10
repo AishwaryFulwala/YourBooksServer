@@ -8,10 +8,11 @@ const getBooks = async (req, res) => {
     }
 
     const get = await booksModel.getBooks();
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Book Found.'
-        });        
+        });
     }
 
     return res.status(200).json(get);
@@ -27,14 +28,14 @@ const getBooksByCategory = async (req, res) => {
     const id = req.params.id;
     const get = await booksModel.getBooksByCategory(id);
 
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Book Found.'
-        });        
-    }
-
-    if(get?.error){
-        return res.status(400).json(get);
+        });
     }
 
     return res.status(200).json(get);
@@ -73,14 +74,14 @@ const getBooksByUser = async (req, res) => {
     const id = req.params.id;
     const get = await booksModel.getBooksByUser(id);
 
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Book Found.'
-        });        
-    }
-
-    if(get?.error){
-        return res.status(400).json(get);
+        });
     }
 
     return res.status(200).json(get);
@@ -96,14 +97,37 @@ const getBookNameByUser = async (req, res) => {
     const id = req.params.id;
     const get = await booksModel.getBookNameByUser(id);
 
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
     if(!get.length) {
         return res.status(404).json({
             error: 'No Book Found.'
-        });        
+        });
     }
+
+    return res.status(200).json(get);
+};
+
+const getBooksByBookID = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const id = req.params.id;
+    const get = await booksModel.getBooksByBookID(id);
 
     if(get?.error){
         return res.status(400).json(get);
+    }
+
+    if(!get.length) {
+        return res.status(404).json({
+            error: 'No Book Found.'
+        });
     }
 
     return res.status(200).json(get);
@@ -167,6 +191,7 @@ module.exports = {
     getBooksByID,
     getBooksByUser,
     getBookNameByUser,
+    getBooksByBookID,
     addBook,
     updateBook,
     deleteBook,
