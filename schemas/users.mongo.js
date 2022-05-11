@@ -20,6 +20,9 @@ const usersSchema = new mongoose.Schema({
     Followers: {
         type: Array,
     },
+    Token: {
+        type: Array,
+    },
 });
 
 module.exports = mongoose.model('Users', usersSchema);

@@ -102,9 +102,10 @@ const updateUser = async (req, res) => {
         });
     }
     
-    let user = req.body;
     const id = req.params.id;
+    let user = req.body;
     user = {...user.user}
+
     const check = await usersModel.getUser(id);
 
     if(check?.error){
@@ -172,6 +173,26 @@ const updateUser = async (req, res) => {
             }
 
             return res.status(200).json({ res: 'Delete'});
+        }
+    }
+
+    if(user?.Token) {
+        const check = await usersModel.checkToken(id, user?.Token);
+
+        if(check?.error){
+            return res.status(400).json(check);
+        }
+
+        if(!check) {
+            const get = await usersModel.updateToken(id, user?.Token);
+            return res.status(200).json(get);
+        }
+
+        if(check) {
+            if(user?.del) {
+                const get = await usersModel.delToken(id, user?.Token);
+                return res.status(200).json(get);
+            }
         }
     }
     

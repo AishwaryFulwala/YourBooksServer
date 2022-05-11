@@ -103,6 +103,53 @@ const getFollow = async (id) => {
     }
 };
 
+const checkToken = async (id, token) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await users.findOne({
+        _id: mongoose.Types.ObjectId(id),
+        Token: token
+    })
+};
+
+const updateToken = async (id, token) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await users.updateOne({
+        _id: mongoose.Types.ObjectId(id)
+    }, {
+        $push: {
+            Token: token
+        }
+    });
+};
+
+const delToken = async (id, token) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await users.updateOne({
+        _id: mongoose.Types.ObjectId(id)
+    }, {
+        $pull: {
+            Token: token
+        }
+    });
+};
+
+const getToken = async (id) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await users.findOne({
+        _id: mongoose.Types.ObjectId(id)
+    },{ 
+        Token: 1,
+    });
+};
+
 module.exports = {
     registerUser,
     checkUser,
@@ -111,5 +158,9 @@ module.exports = {
     checkFollow,
     updateFollow,
     delFollow,
-    getFollow
+    getFollow,
+    checkToken,
+    updateToken,
+    delToken,
+    getToken,
 }; 

@@ -9,12 +9,13 @@ const ratingRouter = require('./routers/rating.router');
 const readingListRouter = require('./routers/readingList.router');
 const searchHistoryRouter = require('./routers/serachHistory.router');
 const notificationRouter = require('./routers/notification.router');
+const firebaseNotificationRouter = require('./routers/firebaseNotification.router');
 
 const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
     if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         const validUser = jwt.verify(req.headers.authorization.split(' ')[1], 'secret');
         
@@ -36,5 +37,6 @@ app.use(ratingRouter);
 app.use(readingListRouter);
 app.use(searchHistoryRouter);
 app.use(notificationRouter);
+app.use(firebaseNotificationRouter);
 
 module.exports = app

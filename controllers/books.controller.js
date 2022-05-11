@@ -110,29 +110,6 @@ const getBookNameByUser = async (req, res) => {
     return res.status(200).json(get);
 };
 
-const getBooksByBookID = async (req, res) => {
-    if(!req.user) {
-        return res.status(401).json({
-            error: 'You must have to Login.',
-        });
-    }
-
-    const id = req.params.id;
-    const get = await booksModel.getBooksByBookID(id);
-
-    if(get?.error){
-        return res.status(400).json(get);
-    }
-
-    if(!get.length) {
-        return res.status(404).json({
-            error: 'No Book Found.'
-        });
-    }
-
-    return res.status(200).json(get);
-};
-
 const addBook = async (req, res) => {
     if(!req.user) {
         return res.status(401).json({
@@ -191,7 +168,6 @@ module.exports = {
     getBooksByID,
     getBooksByUser,
     getBookNameByUser,
-    getBooksByBookID,
     addBook,
     updateBook,
     deleteBook,
