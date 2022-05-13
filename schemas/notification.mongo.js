@@ -8,10 +8,14 @@ const notificationSchema = new mongoose.Schema({
     NotificationBody: {
         type: String,
         default: ''
-    },
+    }, 
     NotificationDate: {
         type: Date,
         default: new Date().toISOString(),
+    },
+    Status: {
+        type: Boolean,
+        default: true
     },
     BookID: mongoose.Schema.ObjectId,
     UserID: mongoose.Schema.ObjectId,

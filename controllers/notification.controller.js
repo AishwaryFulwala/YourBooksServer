@@ -75,9 +75,28 @@ const deleteNotificationByID = async (req, res) => {
     return res.status(200).json();
 };
 
+const updateNotification = async (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({
+            error: 'You must have to Login.',
+        });
+    }
+
+    const notification = req.body;
+    const id = req.params.id;
+    const get = await notificationModel.updateNotification(id, notification);
+
+    if(get?.error){
+        return res.status(400).json(get);
+    }
+
+    return res.status(200).json(get);
+};
+
 module.exports = {
     getNotification,
     getNotificationByID,
     addNotification,
+    updateNotification,
     deleteNotificationByID,
 }; 

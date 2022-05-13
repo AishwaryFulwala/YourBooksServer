@@ -9,10 +9,6 @@ const getNotificationByID = async (id) => {
     if(!mongoose.Types.ObjectId.isValid(id))
         return { error: 'Invalid Opration.' };
         
-    // return await notification.find({
-    //     UserID: mongoose.Types.ObjectId(id),
-    // }).sort({NotificationDate: -1});
-
     return await notification.aggregate([
         {
             $match: {
@@ -40,6 +36,7 @@ const getNotificationByID = async (id) => {
                     NotificationTitle: '$NotificationTitle',
                     NotificationBody: '$NotificationBody',
                     NotificationDate: '$NotificationDate',
+                    Status: '$Status',
                     BookPic: '$books.BookPic',
                     ID: '$_id'
                 }
@@ -64,6 +61,19 @@ const addNotification = async (noti) => {
     return await newNotification.save();
 };
 
+const updateNotification = async (id, noti) => {
+    if(!mongoose.Types.ObjectId.isValid(id))
+        return { error: 'Invalid Opration.' };
+
+    return await notification.updateOne({
+       _id: mongoose.Types.ObjectId(id)
+    }, {
+        $set: {
+            ...noti,
+        }
+    });
+};
+
 const deleteNotificationByID = async (id) => {
     if(!mongoose.Types.ObjectId.isValid(id))
         return { error: 'Invalid Opration.' };
@@ -75,5 +85,6 @@ module.exports = {
     getNotification,
     getNotificationByID,
     addNotification,
+    updateNotification,
     deleteNotificationByID,
 }; 
