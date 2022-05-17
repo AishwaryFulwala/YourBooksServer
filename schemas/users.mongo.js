@@ -4,7 +4,10 @@ const usersSchema = new mongoose.Schema({
     UserName: String,
     Email: String,
     Password: String,
-    ContactNo: String,
+    ContactNo: {
+        type: String,
+        default: ''
+    },
     ProfilePic: {
         type: String,
         default: 'https://firebasestorage.googleapis.com/v0/b/yourbooks-f1f3d.appspot.com/o/Images%2FProfilePic%2FNoImage.jpeg?alt=media&token=30d728bb-b276-4e5f-9cf7-15eadc93dcdf'
